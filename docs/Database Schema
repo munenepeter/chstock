@@ -1,0 +1,75 @@
+erDiagram
+    REQUISITION_ORDER ||--|{ REQUISITION_ITEMS : contains
+    REQUISITION_ORDER ||--o| PURCHASE_ORDER : generates
+    PURCHASE_ORDER ||--|{ PURCHASE_ORDER_ITEMS : contains
+    PURCHASE_ORDER ||--|| SUPPLIER : assigned_to
+    ITEM ||--o{ REQUISITION_ITEMS : referenced_in
+    ITEM ||--o{ PURCHASE_ORDER_ITEMS : referenced_in
+
+    REQUISITION_ORDER {
+        varchar ro_number PK
+        varchar department
+        decimal total_amount
+        enum status
+        datetime created_at
+        datetime updated_at
+    }
+
+    REQUISITION_ITEMS {
+        int id PK
+        varchar ro_number FK
+        int item_id FK
+        int quantity
+        decimal unit_price
+        decimal total_price
+        datetime created_at
+        datetime updated_at
+    }
+
+    PURCHASE_ORDER {
+        varchar lpo_number PK
+        varchar ro_number FK
+        int supplier_id FK
+        enum status
+        enum procurement_method
+        varchar procurement_reference
+        decimal total_amount
+        date date_of_commitment
+        date expiry_date
+        datetime created_at
+        datetime updated_at
+    }
+
+    PURCHASE_ORDER_ITEMS {
+        int id PK
+        varchar lpo_number FK
+        int item_id FK
+        int quantity
+        decimal unit_price
+        decimal total_price
+        datetime created_at
+        datetime updated_at
+    }
+
+    ITEM {
+        int id PK
+        varchar name
+        decimal unit_price
+        varchar unit_of_issue
+        boolean active
+        int purchase_limit
+        datetime created_at
+        datetime updated_at
+    }
+
+    SUPPLIER {
+        int id PK
+        varchar name
+        varchar email
+        varchar phone
+        text address
+        boolean active
+        decimal rating
+        datetime created_at
+        datetime updated_at
+    }
